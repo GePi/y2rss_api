@@ -1,5 +1,6 @@
 package farm.giggle.y2rss_api.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Value("${BASIC_AUTH_USER}")
+    String basic_auth_user;
+
+    @Value("${BASIC_AUTH_PASSWORD}")
+    String basic_auth_password;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,8 +41,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails userDetails = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
+                .username(basic_auth_user)
+                .password(passwordEncoder.encode(basic_auth_password))
                 .roles("FILE_DOWNLOADER")
                 .build();
         return new InMemoryUserDetailsManager(userDetails);
