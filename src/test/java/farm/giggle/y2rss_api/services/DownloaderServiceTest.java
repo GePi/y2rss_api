@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +48,7 @@ class DownloaderServiceTest {
                 UUID.randomUUID(), "http://ffaway.online/video2", next , UUID.randomUUID(), 2L, null
         );
 
-        when(fileJournalRepository.getTopRecord()).thenReturn(fileJournalNext);
+        when(fileJournalRepository.getTopRecordAndLock()).thenReturn(fileJournalNext);
 
         FileJournal result = fileJournalService.take();
         assertNotNull(result);
@@ -60,7 +59,7 @@ class DownloaderServiceTest {
 
     @Test
     void testTakeNoRecord() {
-        when(fileJournalRepository.getTopRecord()).thenReturn(null);
+        when(fileJournalRepository.getTopRecordAndLock()).thenReturn(null);
 
         FileJournal result = fileJournalService.take();
         assertNull(result);
@@ -73,10 +72,10 @@ class DownloaderServiceTest {
         UUID journalID = UUID.randomUUID();
         LocalDateTime processingTime = LocalDateTime.now(Clock.systemUTC());
 
-        doNothing().when(fileJournalRepository).deleteRecord(journalID, processingTime);
+        doNothing().when(fileJournalRepository).deleteRecord(journalID);
 
-        fileJournalService.delete(journalID, processingTime);
+        fileJournalService.delete(journalID);
 
-        verify(fileJournalRepository, times(1)).deleteRecord(journalID, processingTime);
+        verify(fileJournalRepository, times(1)).deleteRecord(journalID);
     }
 }

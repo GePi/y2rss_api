@@ -14,6 +14,6 @@ import java.util.UUID;
 public interface FileRepository extends CrudRepository<FileJournal, UUID> {
     @Transactional
     @Modifying
-    @Query("UPDATE files SET downloaded_url = :downloadedUrl, downloaded_at = :downloadedAt WHERE id = :fileid")
+    @Query("UPDATE files SET downloaded_url = :downloadedUrl, downloaded_at = :downloadedAt WHERE id = :fileId")
     void updateDownloadFields(Long fileId, String downloadedUrl, LocalDateTime downloadedAt);
 }

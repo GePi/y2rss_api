@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.VerificationModeFactory;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -48,7 +47,7 @@ class FileJournalServiceTest {
                 UUID.randomUUID(), "http://ffaway.online/video2", next, UUID.randomUUID(), 2L, null
         );
 
-        when(fileJournalRepository.getTopRecord()).thenReturn(fileJournalNext);
+        when(fileJournalRepository.getTopRecordAndLock()).thenReturn(fileJournalNext);
 
         FileJournal result = fileJournalService.take();
         assertNotNull(result);
@@ -59,8 +58,7 @@ class FileJournalServiceTest {
 
     @Test
     void testDelete() {
-        fileJournalService.delete(UUID.randomUUID(), LocalDateTime.now());
-        verify(fileJournalRepository, times(1)).deleteRecord(any(UUID.class), any(LocalDateTime.class));
+        fileJournalService.delete(UUID.randomUUID());
+        verify(fileJournalRepository, times(1)).deleteRecord(any(UUID.class));
     }
-
 }

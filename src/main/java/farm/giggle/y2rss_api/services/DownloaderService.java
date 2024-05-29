@@ -29,8 +29,11 @@ public class DownloaderService {
     @Transactional
     public boolean completeDownload(ExchangeFileFormatDTO fileDTO) {
         try {
-            fileJournalService.delete(fileDTO.getJournalID(), fileDTO.getProcessingTime());
-            fileRepository.updateDownloadFields(fileDTO.getFileId(), fileDTO.getDownloadedUrl(), fileDTO.getDownloadedAt());
+            FileJournal fileJournal = fileJournalService.getJournalRecordAndLock(fileDTO.getJournalID(), fileDTO.getProcessingTime());
+            if (fileJournal != null) {
+                fileRepository.updateDownloadFields(fileJournal.fileID(), fileDTO.getDownloadedUrl(), fileDTO.getDownloadedAt());
+                fileJournalService.delete(fileJournal.id());
+            }
         } catch (Exception e) {
             log.error("completeDownload", e);
             return false;

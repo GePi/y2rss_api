@@ -1,11 +1,8 @@
 spring:
+  profiles:
+    active: ${ACTIVE_PROFILE}
   application:
     name: y2rss_api
   data:
     jdbc:
       dialect: postgresql
-  datasource:
-    url: jdbc:postgresql://${DB_HOST_LOCAL}:${DB_PORT_LOCAL}/y2rssdb
-    driver-class-name: org.postgresql.Driver
-    username: ${DB_USERNAME_LOCAL}
-    password: ${DB_PASSWORD_LOCAL}

@@ -3,25 +3,25 @@ package farm.giggle.y2rss_api.dto;
 import farm.giggle.y2rss_api.model.FileJournal;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class ExchangeFileFormatDTO {
     @NotNull
-    final private Long fileId;
+    private String videoUrl;
     @NotNull
-    final private String videoUrl;
+    private UUID journalID;
 
-    final private UUID journalID;
-    final private LocalDateTime processingTime;
+    private LocalDateTime processingTime;
 
-    final private String downloadedUrl;
-    final private LocalDateTime downloadedAt;
+    private String downloadedUrl;
+    private LocalDateTime downloadedAt;
 
     public ExchangeFileFormatDTO(FileJournal fileJournalRecord) {
-        this.fileId = fileJournalRecord.fileID();
         this.videoUrl = fileJournalRecord.url();
         this.journalID = fileJournalRecord.id();
         this.processingTime = fileJournalRecord.processingTime();

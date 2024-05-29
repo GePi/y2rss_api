@@ -22,16 +22,22 @@ public class FileJournalService {
     @Transactional
     @Nullable
     public FileJournal take() {
-        FileJournal topRecord = fileJournalRepository.getTopRecord();
+        FileJournal topRecord = fileJournalRepository.getTopRecordAndLock();
         if (topRecord == null) {
             return null;
         }
-        fileJournalRepository.updateProcessingTimeById(topRecord.id(), LocalDateTime.now(Clock.systemUTC()));
-        return topRecord;
+        LocalDateTime processingTime = LocalDateTime.now(Clock.systemUTC());
+        fileJournalRepository.updateProcessingTimeById(topRecord.id(), processingTime);
+        return new FileJournal(topRecord, processingTime);
     }
 
     @Transactional
-    public void delete(UUID journalID, LocalDateTime processingTime) {
-        fileJournalRepository.deleteRecord(journalID, processingTime);
+    public FileJournal getJournalRecordAndLock(UUID journalID, LocalDateTime processingTime) {
+        return fileJournalRepository.getRecordAndLock(journalID, processingTime);
+    }
+
+    @Transactional
+    public void delete(UUID journalID) {
+        fileJournalRepository.deleteRecord(journalID);
     }
 }
