@@ -10,7 +10,7 @@
     </parent>
     <groupId>farm.giggle</groupId>
     <artifactId>y2rss_api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>y2rss_api</name>
     <description>y2rss_api</description>
     <properties>
@@ -79,6 +79,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>gepi/y2rss_api:${project.version}</imageName>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+
             </plugin>
         </plugins>
     </build>
