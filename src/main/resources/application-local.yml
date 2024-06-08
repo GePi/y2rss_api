@@ -6,3 +6,10 @@ spring:
     password: ${DB_PASSWORD}
 server:
   port: ${SERVICE_PORT}
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+    farm.giggle: TRACE
+

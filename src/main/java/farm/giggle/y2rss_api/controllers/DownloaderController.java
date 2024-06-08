@@ -17,6 +17,7 @@ public class DownloaderController {
         this.downloaderService = downloaderService;
     }
 
+    @CrossOrigin
     @GetMapping("/getFileToDownload")
     public ResponseEntity<ExchangeFileFormatDTO> getFileToDownload() {
 
@@ -29,6 +30,7 @@ public class DownloaderController {
         return ResponseEntity.ok(fileDTO);
     }
 
+    @CrossOrigin
     @PutMapping("/putDownloadedFile")
     public ResponseEntity<Void> putDownloadedFile(@RequestBody ExchangeFileFormatDTO fileDTO) {
         if (downloaderService.completeDownload(fileDTO)) {
